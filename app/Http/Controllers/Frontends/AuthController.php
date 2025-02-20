@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use function Laravel\Prompts\password;
+
 
 
 class AuthController extends Controller
@@ -222,7 +222,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         toastr()
-            ->positionClass('toast-top-right')
+            ->positionClass('toast-top-center')
             ->success('Logout berhasil!');
         return redirect('/');
     }
