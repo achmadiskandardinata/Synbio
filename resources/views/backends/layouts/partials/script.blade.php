@@ -8,8 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <!-- Need: Apexcharts -->
-<script src="{{asset('backends/assets/extensions/apexcharts/apexcharts.min.js')}}"></script>
+{{-- <script src="{{asset('backends/assets/extensions/apexcharts/apexcharts.min.js')}}"></script> --}}
 <script src="{{asset('backends/assets/static/js/pages/dashboard.js')}}"></script>
 
 <!-- Need: Sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Custom Js -->
+@stack('js')
