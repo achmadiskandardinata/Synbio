@@ -66,8 +66,6 @@
                     <i class="bi bi-box"></i>
                     <span>Product</span>
                 </a>
-
-
             </li>
 
             <li class="sidebar-item {{ Route::is('admin.banks*') ? 'active' : '' }}">
@@ -75,14 +73,29 @@
                     <i class="bi bi-bank"></i>
                     <span>Bank</span>
                 </a>
-
-
             </li>
+
+            <li class="sidebar-item {{ Route::is('admin.couriers*') ? 'active' : '' }}">
+                <a href="{{ route('admin.couriers.index') }}" class='sidebar-link'>
+                    <i class="bi bi-truck"></i>
+                    <span>Courier</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item {{ Route::is('admin.users*') ? 'active' : '' }}">
+                <a href="{{ route('admin.users.index') }}" class='sidebar-link'>
+                    <i class="bi bi-person"></i>
+                    <span>User</span>
+                </a>
+            </li>
+
+
+
 
         </ul>
 
         <ul class="menu">
-            <li class="sidebar-title">User</li>
+            <li class="sidebar-title">Setting</li>
 
             <li class="sidebar-item ">
                 <a href="{{ route('admin.logout') }}" class='sidebar-link'

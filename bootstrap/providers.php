@@ -8,4 +8,6 @@ return [
 
     //paginatoion
     Paginator::useBootstrap(),
+
+    Barryvdh\Debugbar\ServiceProvider::class,
 ];
