@@ -8,11 +8,23 @@ use App\Http\Controllers\Backends\ProductController;
 use App\Http\Controllers\Backends\BankController;
 use App\Http\Controllers\Backends\CourierController;
 use App\Http\Controllers\Backends\UserController;
-
+use App\Http\Controllers\Frontends\HomePageController;
+use App\Http\Controllers\Frontends\ProductPageController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontends.layouts.app');
 });
+
+//Page Route
+Route::get('/', [HomePageController::class, 'index'])
+    ->name('home.page');
+
+//Product Page Route
+Route::get('/products', [ProductPageController::class, 'index'])
+    ->name('products.page');
+Route::get('/products/detail/{product:slug}', [ProductPageController::class, 'show'])
+    ->name('products.detail');
+
 
 
 //User Route
@@ -106,7 +118,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         ->name('admin.users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])
         ->name('admin.users.destroy');
-
 });
 
 require __DIR__ . '/auth-admin.php';
