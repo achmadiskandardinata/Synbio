@@ -59,7 +59,7 @@
                                                             alt="{{ $product->image }}" class="img-fluid" style="max-width: 150px;">
                                                     @endif
                                                 </td>
-                                                <td>{{ $product->weight }} gram</td>
+                                                <td>{{ $product->weight }} kg</td>
                                                 <td>{{moneyFormat($product->price)}}</td>
                                                 <td>
                                                     @if ($product->status == 'show')

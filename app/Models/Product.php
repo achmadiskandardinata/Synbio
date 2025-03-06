@@ -17,4 +17,10 @@ class Product extends Model
         'price',
         'status',
     ];
+
+    // Relasi ke tabel cart
+    public function carts()
+    {
+        return $this->hasMany(Product::class,'product_id','id');
+    }
 }
