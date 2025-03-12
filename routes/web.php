@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontends\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontends\HomeController;
 use App\Http\Controllers\Backends\DashboardController;
@@ -11,6 +12,10 @@ use App\Http\Controllers\Backends\UserController;
 use App\Http\Controllers\Frontends\HomePageController;
 use App\Http\Controllers\Frontends\ProductPageController;
 use App\Http\Controllers\Frontends\CartController;
+use App\Http\Controllers\Frontends\CheckoutController;
+use App\Http\Controllers\Frontends\invoiceController;
+use App\Http\Controllers\Frontends\PaymentController;
+use App\Http\Controllers\Frontends\successController;
 
 Route::get('/', function () {
     return view('frontends.layouts.app');
@@ -51,6 +56,37 @@ Route::middleware('auth')->group(function () {
         ->name('carts.update');
     Route::post('/carts/delete/{id}', action: [CartController::class, 'deleteCart'])
         ->name('carts.delete');
+
+    //Checkout Route
+    Route::post('/checkout', action: [CheckoutController::class, 'processCheckout'])
+        ->name('checkout.process');
+
+    //Order Route
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders');
+    Route::get('/orders/{orderId}/detail', [OrderController::class, 'show'])
+        ->name('orders.detail');
+    Route::put('/orders/{orderId}/update', [OrderController::class, 'update'])
+        ->name('orders.update');
+
+    //Payment Route
+
+    Route::get('/payments/{payment}', [PaymentController::class, 'index'])
+        ->name('payments.index');
+    Route::get('/payments/process/{orderId}', [PaymentController::class, 'processPayment'])
+        ->name('payments.process');
+    Route::post('/payments/confirm/{paymentId}', [PaymentController::class, 'confirmPayment'])
+    ->name('payments.confirm');
+
+    //Success route
+    Route::get('/success', [successController::class,'index'])
+    ->name('payments.success')
+    ->middleware('check.payment.success');
+
+    //invoice route
+    Route::get('/invoice/{orderId}/customer', [invoiceController::class,'index'])->name('invoice');
+
+
 });
 
 //Admin Route
@@ -140,5 +176,11 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         ->name('admin.users.destroy');
 });
 
+//Auth Route/Fungsi DIR = Directory adalah fungsi untuk memanggil file
 require __DIR__ . '/auth-admin.php';
 require __DIR__ . '/auth-user.php';
+
+//Fallback 404 Eror Route
+Route::fallback(function () {
+    return view('frontends.errors.404');
+});

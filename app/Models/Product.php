@@ -23,4 +23,10 @@ class Product extends Model
     {
         return $this->hasMany(Product::class,'product_id','id');
     }
+
+    //relasi ke tabel OrderItem
+    public function orderItem()
+    {
+        return $this->hasMany(OrderItem::class, 'product_id', 'id');
+    }
 }

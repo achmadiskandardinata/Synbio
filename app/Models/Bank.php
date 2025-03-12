@@ -17,4 +17,10 @@ class Bank extends Model
         'account_name',
         'image',
     ];
+
+    //relasi ke tabel order
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'bank_id', 'id');
+    }
 }

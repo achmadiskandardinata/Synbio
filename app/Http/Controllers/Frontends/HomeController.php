@@ -29,7 +29,16 @@ class HomeController extends Controller
         ->limit(4)
         ->get();
 
-        return view('frontends.home', compact('banners','products'));
+        //Tampilkan product yang paling banyak di orderberdasarkan product_id. order_id pada table order_item
+        $productsOrders = Product::select('products.*')
+        ->join('order_items','products.id','=','order_items.product_id')
+        ->groupBy('products.id')
+        ->orderByRaw('SUM(order_items.weight) DESC')
+        //->orderByRaw('COUNT(order_items.product_id)DESC')
+        ->limit(4)
+        ->get();
+
+        return view('frontends.home', compact('banners','products', 'productsOrders'));
 
         // dd($banners, $products);
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontends;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
@@ -77,6 +79,11 @@ class CartController extends Controller
 
     public function cartCount()
     {
+        //cek apakah request yang masukadalah ajax atau bukan jika bukan ajax maka akan menampilkan halaman 404
+        if (!request()->ajax()) {
+            return view('frontends.errors.404');
+        }
+
         $carts = Cart::where('user_id', Auth::user()->id)->count();
         return response()->json(['count' => $carts]);
     }
@@ -115,6 +122,22 @@ class CartController extends Controller
         // Fungsi hapus keranjang belanja di halaman keranjang berdasarkan id keranjang
         $cart = Cart::where('user_id', Auth::user()->id)->where('id', $id)->firstOrFail();
         $cart->delete();
+
+        //Hapus order item yang tidak ada di cart
+        // OrderItem::where('product_id', $cart->product_id)->delete();
+
+        //Hapus order item yang tidak ada di cart dan hapus juga order jika order item tidak ada
+        $orderItems = OrderItem::where('product_id', $cart->product_id)->first();
+        if ($orderItems) {
+            $orderItems->delete();
+            $order = Order::where('id', $orderItems->order_id)->first();
+            if ($order) {
+                $remainingOrderItems = OrderItem::where('order_id', $order->id)->count();
+                if ($remainingOrderItems == 0) {
+                    $order->delete();
+                }
+            }
+        }
 
         return response()->json([
             'status' => 'success',
