@@ -26,7 +26,7 @@
         <div class="container">
             <!-- Produk Terbaik -->
                 {{-- @if ($productsOrders->count() > 0) --}}
-                @if ($productsOrders->isNoEmpty)
+                @if ($productsOrders->isNotEmpty())
                     <div class="row">
                         <div class="col-lg-6">
                             <h4>Produk Terbaik</h4>
