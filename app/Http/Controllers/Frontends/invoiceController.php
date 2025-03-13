@@ -7,8 +7,7 @@ use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class invoiceController extends Controller
 {
@@ -18,11 +17,18 @@ class invoiceController extends Controller
         //ambil user yang sedang login
         $user = $request->user();
 
-        //ambil data dari order yang sudah success berdasarkan id
+        //ambil data dari order yang sudah success berdasarkan id dan user yang sedang login dan guard admin yang sedang login
+        if (Auth::guard('admin')->check()) {
+            $order = Order::where ('id', $orderId)
+            ->where('status', 'success')
+            ->firstOrFail();
+
+        }else{
         $order = Order::where ('id', $orderId)
         ->where('status', 'success')
         ->where('user_id', $user->id)
         ->firstOrFail();
+        }
 
         //generate PDF dengan orientasi yang sudah ditentukan
         $pdf = Pdf::loadView('frontends.invoices.index', compact('order'))->setPaper('a4', $orientation);

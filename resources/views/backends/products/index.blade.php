@@ -1,7 +1,7 @@
 @extends('backends.layouts.app', ['title' => 'Products'])
 
 @section('content')
-      <section class="section">
+    <section class="section">
         <div class="row" id="basic-table">
             <div class="col-12 col-md-12">
                 <div class="card border-0 shadow">
@@ -20,7 +20,8 @@
                                                     class="bi bi-plus-circle"></i>
                                                 ADD</a>
                                         </div>
-                                        <input type="text" class="form-control" name="q" placeholder="Search data here...">
+                                        <input type="text" class="form-control" name="q"
+                                            placeholder="Search data here...">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i>
                                                 SEARCH</button>
@@ -53,14 +54,16 @@
                                                 <td>
                                                     @if ($product->image && file_exists(public_path('storage/products/' . $product->image)))
                                                         <img src="{{ asset("storage/products/{$product->image}") }}"
-                                                            alt="{{ $product->image }}" class="img-fluid" style="max-width: 150px;">
+                                                            alt="{{ $product->image }}" class="img-fluid"
+                                                            style="max-width: 150px;">
                                                     @else
                                                         <img src="https://dummyimage.com/1440x600/8f298f/fff.png&text=Poduct+Tidak+Ada"
-                                                            alt="{{ $product->image }}" class="img-fluid" style="max-width: 150px;">
+                                                            alt="{{ $product->image }}" class="img-fluid"
+                                                            style="max-width: 150px;">
                                                     @endif
                                                 </td>
                                                 <td>{{ $product->weight }} kg</td>
-                                                <td>{{moneyFormat($product->price)}}</td>
+                                                <td>{{ moneyFormat($product->price) }}</td>
                                                 <td>
                                                     @if ($product->status == 'show')
                                                         <span class="badge bg-success">{{ $product->status }}</span>
@@ -74,16 +77,17 @@
                                                         class="btn btn-sm btn-warning">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    @if ($product->status != 'show')
+                                                    @if ($product->status != 'show' && $product->orderItem->count() == 0 && $product->carts->count() == 0)
                                                         <button onclick="deleteData('{{ $product->id }}')"
-                                                            class="btn btn-sm btn-danger" id="#">
+                                                            class="btn btn-sm btn-danger">
                                                             <i class="bi bi-trash"></i></button>
 
-                                                <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                                            id="deleteForm{{ $product->id }}" method="post" class="d-inline">
+                                                        <form action="{{ route('admin.products.destroy', $product->id) }}"
+                                                            id="deleteForm{{ $product->id }}" method="post"
+                                                            class="d-inline">
                                                             @csrf
                                                             @method('delete')
-                                                </form>
+                                                        </form>
                                                     @endif
                                                 </td>
                                             </tr>

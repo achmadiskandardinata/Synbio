@@ -1,4 +1,4 @@
-@extends('backends.layouts.app', ['title' => 'Couriers'])
+@extends('backends.layouts.app', ['title' => 'Orders'])
 
 @section('content')
 <section class="section">
@@ -10,15 +10,10 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form method="GET" action="{{ route('admin.couriers.index') }}">
-                            @csrf
+                        <form method="GET" action="{{ route('admin.orders.index') }}">
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <a href="{{ route('admin.couriers.create') }}" class="btn btn-primary"><i
-                                                class="bi bi-plus-circle"></i>
-                                            ADD</a>
-                                    </div>
+
                                     <input type="text" class="form-control" name="q"
                                         placeholder="Search data here...">
                                     <div class="input-group-append">
@@ -34,36 +29,38 @@
                                 <thead>
                                     <tr>
                                         <th>NO.</th>
-                                        <th>KURIR</th>
-                                        <th>LAYANAN</th>
-                                        <th>BIAYA</th>
+                                        <th>No. INVOICE</th>
+                                        <th>CUSTOMER</th>
+                                        <th>TOTAL BIAYA</th>
+                                        <TH>STATUS</TH>
                                         <th>AKSI</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($couriers as $courier)
+                                    @forelse($orders as $order)
                                         <tr>
-                                            <td>{{ $loop->iteration + $couriers->perPage() * ($couriers->currentPage() - 1) }}
+                                            <td>{{ $loop->iteration + $orders->perPage() * ($orders->currentPage() - 1) }}
                                             </td>
-                                            <td>{{ $courier->name }}</td>
-                                            <td>{{ $courier->service }}</td>
-                                            <td>{{ moneyFormat($courier->cost) }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('admin.couriers.edit', $courier->id) }}"
-                                                    class="btn btn-sm btn-warning">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                                @if ($courier->order->count() == 0)
-                                                    <button onclick="deleteData('{{ $courier->id }}')"
-                                                        class="btn btn-sm btn-danger" id="#">
-                                                        <i class="bi bi-trash"></i></button>
+                                            <td>{{ $order->invoice_number }}</td>
+                                            <td>{{ $order->user->name }}</td>
+                                            <td>{{ moneyFormat($order->total_price) }}</td>
+                                            <td>
+                                                @if ($order->status == 'PENDING')
+                                                    <span class="badge bg-warning">{{ $order->status }}</span>
+                                                @elseif ($order->status == 'SUCCESS')
+                                                    <span class="badge bg-success">{{ $order->status }}</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ $order->status }}</span>
 
-                                                    <form action="{{ route('admin.couriers.destroy', $courier->id) }}"
-                                                        id="deleteForm{{ $courier->id }}" method="post"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                    </form>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($order->status == 'SUCCESS')
+                                                <a href="{{route('customers.invoice', ['orderId' => $order->id])}}" class="btn btn-sm btn-primary" target="_blank">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                @else
+                                                <p>-</p>
                                                 @endif
                                             </td>
                                         </tr>
@@ -75,11 +72,11 @@
                         </div>
                         <div class="col-12 d-flex justify-content-between mt-3">
                             <div>
-                                Showing {{ $couriers->firstItem() }} to {{ $couriers->lastItem() }} of
-                                {{ $couriers->total() }} entries
+                                Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of
+                                {{ $orders->total() }} entries
                             </div>
                             <div>
-                                {{ $couriers->links() }}
+                                {{ $orders->links() }}
                             </div>
 
                         </div>
@@ -90,8 +87,3 @@
     </div>
 </section>
 @endsection
-
-@push('js')
-<script src="{{ asset('assets/js/sweetalert-delete.js') }}"></script>
-@endpush
-

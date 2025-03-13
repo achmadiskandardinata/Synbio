@@ -1,11 +1,11 @@
-@extends('backends.layouts.app', ['title' => 'Users'])
+@extends('backends.layouts.app', ['title' => 'Customers'])
 
 @section('content')
     <div class="row match-height">
         <div class="col-md-6 col-12">
             <div class="card border-0 shadow">
                 <div class="card-header border-0 bg-primary text-white">
-                    <h4 class="card-title m-0 font-weight-bold"><i class="bi bi-person"></i> TAMBAH USER</h4>
+                    <h4 class="card-title m-0 font-weight-bold"><i class="bi bi-person"></i> TAMBAH CUSTOMER</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body">

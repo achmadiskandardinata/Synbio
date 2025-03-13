@@ -2,7 +2,7 @@
     <div class="sidebar-header position-relative">
         <div class="d-flex justify-content-between align-items-center">
             <div class="logo">
-                <a href="index.html"><img src="{{ 'backends/assets/compiled/svg/logo.svg' }}" alt="Logo"
+                <a href="{{ route('admin.dashboard') }}"><img src="{{ asset('backends/assets/compiled/svg/logo.svg') }}" alt="Logo"
                         srcset=""></a>
             </div>
             <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
@@ -85,7 +85,14 @@
             <li class="sidebar-item {{ Route::is('admin.users*') ? 'active' : '' }}">
                 <a href="{{ route('admin.users.index') }}" class='sidebar-link'>
                     <i class="bi bi-person"></i>
-                    <span>User</span>
+                    <span>Customer</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item {{ Route::is('admin.orders*') ? 'active' : '' }}">
+                <a href="{{ route('admin.orders.index') }}" class='sidebar-link'>
+                    <i class="bi bi-person"></i>
+                    <span>Order</span>
                 </a>
             </li>
 

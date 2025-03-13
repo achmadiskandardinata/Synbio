@@ -8,6 +8,7 @@ use App\Http\Controllers\Backends\BannerController;
 use App\Http\Controllers\Backends\ProductController;
 use App\Http\Controllers\Backends\BankController;
 use App\Http\Controllers\Backends\CourierController;
+use App\Http\Controllers\Backends\OrderPageController;
 use App\Http\Controllers\Backends\UserController;
 use App\Http\Controllers\Frontends\HomePageController;
 use App\Http\Controllers\Frontends\ProductPageController;
@@ -162,18 +163,25 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     //User Route
     // route::resource('users', UserController::class);
     // route::resousce('users', UserController::class)->except(['show']);
-    Route::get('/users', [UserController::class, 'index'])
+    Route::get('/customers', [UserController::class, 'index'])
         ->name('admin.users.index');
-    Route::get('/users/create', [UserController::class, 'create'])
+    Route::get('/customers/create', [UserController::class, 'create'])
         ->name('admin.users.create');
-    Route::post('/users', [UserController::class, 'store'])
+    Route::post('/customers', [UserController::class, 'store'])
         ->name('admin.users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])
+    Route::get('/customers/{user}/edit', [UserController::class, 'edit'])
         ->name('admin.users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])
+    Route::put('/customers/{user}', [UserController::class, 'update'])
         ->name('admin.users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])
+    Route::delete('/customers/{user}', [UserController::class, 'destroy'])
         ->name('admin.users.destroy');
+
+    //Order Route
+    Route::get('/orders', [OrderPageController::class, 'index'])
+        ->name('admin.orders.index');
+
+     //invoice route
+    Route::get('/invoice/{orderId}/customer', [invoiceController::class,'index'])->name('customers.invoice');
 });
 
 //Auth Route/Fungsi DIR = Directory adalah fungsi untuk memanggil file
